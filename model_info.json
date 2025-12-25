@@ -1,0 +1,9 @@
+{
+  "accuracy": 0.9809390980939098,
+  "training_samples": 8600,
+  "test_samples": 2151,
+  "total_samples": 10751,
+  "ham_samples": 6954,
+  "spam_samples": 3797,
+  "feature_count": 8000
+}

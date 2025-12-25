@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spam Email Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h1>Spam Detector</h1>
+            </div>
+            <p class="tagline">AI-powered spam email classification</p>
+        </header>
+
+        <main class="main">
+            <!-- Input Section -->
+            <div class="input-section">
+                <h2><i class="fas fa-envelope"></i> Enter Email Content</h2>
+                
+                <div class="text-controls">
+                    <button id="clearBtn" class="btn-small">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                    <button id="formatBtn" class="btn-small">
+                        <i class="fas fa-align-left"></i> Format
+                    </button>
+                </div>
+                
+                <textarea id="emailInput" placeholder="Paste email content here...
+
+📧 Sample Spam Email:
+🎉 CONGRATULATIONS! You've WON $10,000!
+Click here: http://bit.ly/win-now
+Hurry! Offer expires in 24 hours!
+
+📧 Sample Legitimate Email:
+Hi Team,
+Meeting scheduled for Thursday at 2 PM.
+Please review the attached document.
+
+💡 Tip: Enter any email text and click Analyze."></textarea>
+                
+                <div class="text-info">
+                    <span><i class="fas fa-font"></i> <span id="charCount">0</span> chars</span>
+                    <span><i class="fas fa-file-word"></i> <span id="wordCount">0</span> words</span>
+                </div>
+
+                <!-- Quick Samples -->
+                <div class="samples">
+                    <h3>Try Sample Emails:</h3>
+                    <div class="sample-buttons">
+                        <button class="sample-btn ham" data-type="ham">
+                            <i class="fas fa-check-circle"></i> Legitimate
+                        </button>
+                        <button class="sample-btn spam" data-type="spam">
+                            <i class="fas fa-exclamation-triangle"></i> Spam
+                        </button>
+                        <button class="sample-btn phishing" data-type="phishing">
+                            <i class="fas fa-fish"></i> Phishing
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Analyze Button -->
+                <button id="analyzeBtn" class="analyze-btn">
+                    <i class="fas fa-search"></i>
+                    <span id="analyzeText">Analyze Email</span>
+                    <div class="loader" id="analyzeLoader"></div>
+                </button>
+                
+                <div class="hint">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Press Ctrl+Enter to analyze quickly</span>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section" id="resultsSection">
+                <!-- Highlight indicator -->
+                <div class="results-highlight" id="resultsHighlight">
+                    <i class="fas fa-star"></i> Results Ready
+                </div>
+                
+                <h2><i class="fas fa-chart-line"></i> Analysis Results</h2>
+                
+                <!-- Status -->
+                <div class="status" id="statusIndicator">
+                    <div class="status-dot" id="statusDot"></div>
+                    <span id="statusText">Ready</span>
+                </div>
+
+                <!-- Prediction Card -->
+                <div class="card prediction-card" id="predictionCard">
+                    <div class="prediction-header">
+                        <h3>Prediction</h3>
+                        <div class="confidence" id="confidenceBadge">
+                            <span id="confidenceValue">--%</span>
+                            <small>confidence</small>
+                        </div>
+                    </div>
+                    
+                    <div class="prediction-content" id="predictionResult">
+                        <div class="prediction-icon">
+                            <i class="fas fa-question-circle fa-2x"></i>
+                        </div>
+                        <div class="prediction-text">
+                            <h4 id="predictionTitle">Waiting for Analysis</h4>
+                            <p id="predictionSubtitle">Enter email text and click Analyze</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Probability Bars -->
+                <div class="card">
+                    <h3>Probability</h3>
+                    <div class="probability">
+                        <div class="probability-bar">
+                            <div class="bar-label">
+                                <span><i class="fas fa-check-circle"></i> Legitimate</span>
+                                <span id="hamPercent">0%</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar ham-bar" id="hamBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="probability-bar">
+                            <div class="bar-label">
+                                <span><i class="fas fa-exclamation-triangle"></i> Spam</span>
+                                <span id="spamPercent">0%</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar spam-bar" id="spamBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features -->
+                <div class="card">
+                    <h3>Text Features</h3>
+                    <div class="features">
+                        <div class="feature" id="featureURLs">
+                            <div class="feature-icon">
+                                <i class="fas fa-link"></i>
+                            </div>
+                            <div class="feature-info">
+                                <span class="feature-title">URLs</span>
+                                <span class="feature-value" id="urlCount">0</span>
+                            </div>
+                        </div>
+                        <div class="feature" id="featureNumbers">
+                            <div class="feature-icon">
+                                <i class="fas fa-hashtag"></i>
+                            </div>
+                            <div class="feature-info">
+                                <span class="feature-title">Numbers</span>
+                                <span class="feature-value" id="numberCount">0</span>
+                            </div>
+                        </div>
+                        <div class="feature" id="featureSuspicious">
+                            <div class="feature-icon">
+                                <i class="fas fa-exclamation"></i>
+                            </div>
+                            <div class="feature-info">
+                                <span class="feature-title">Suspicious</span>
+                                <span class="feature-value" id="suspiciousCount">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="analysis-time">
+                        <i class="fas fa-clock"></i>
+                        <span>Analysis time: <strong id="analysisTime">0.00</strong>s</span>
+                    </div>
+                </div>
+                
+                <!-- Model Info -->
+                <div class="card model-info">
+                    <h3><i class="fas fa-cogs"></i> System Info</h3>
+                    <div class="model-stats">
+                        <div class="stat">
+                            <i class="fas fa-brain"></i>
+                            <div>
+                                <div class="stat-value">Logistic Regression</div>
+                                <div class="stat-label">Algorithm</div>
+                            </div>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-database"></i>
+                            <div>
+                                <div class="stat-value">10,751</div>
+                                <div class="stat-label">Training Emails</div>
+                            </div>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-percentage"></i>
+                            <div>
+                                <div class="stat-value">99.3%</div>
+                                <div class="stat-label">Accuracy</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Spam Detector &copy; 2024 | Powered by Machine Learning</p>
+            <div class="footer-links">
+                <button id="exportResults">
+                    <i class="fas fa-download"></i> Export
+                </button>
+                <button id="refreshModel">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+        </footer>
+
+        <!-- Toast -->
+        <div class="toast" id="toast">
+            <div class="toast-content">
+                <i class="fas fa-check-circle" id="toastIcon"></i>
+                <span id="toastMessage">Success!</span>
+                <button class="toast-close" id="toastClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loadingOverlay">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <h3 id="loadingText">Analyzing...</h3>
+                <p>Processing with AI model</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+Subject: URGENT: Your Computer is INFECTED with 15 Viruses!
+
+WINDOWS SECURITY ALERT
+Microsoft Windows Defender has detected CRITICAL THREATS on your computer!
+
+⚠️ VIRUS DETECTED: Trojan.Win32.Badur.A
+⚠️ VIRUS DETECTED: Ransomware.Cryptolocker.B
+⚠️ VIRUS DETECTED: Spyware.Keylogger.C
+⚠️ 12 additional threats detected!
+
+Your personal information is at RISK!
+• Bank details may be stolen
+• Passwords could be compromised
+• Files may be encrypted for ransom
+
+IMMEDIATE ACTION REQUIRED!
+Call our Microsoft Certified Technicians NOW:
+📞 1-888-555-HELP (Toll-Free)
+Available 24/7
+
+Our technicians will:
+1. Remotely scan your computer
+2. Remove all viruses immediately
+3. Install premium antivirus protection
+4. Secure your system from future attacks
+
+LIMITED TIME OFFER:
+First 50 callers get 80% OFF!
+Regular price: $299.99
+YOUR PRICE: $59.99 (One-time payment)
+
+DON'T DELAY! Every minute you wait puts your data at greater risk!
+
+CALL NOW: 1-888-555-HELP
+(Reference Code: WIN-ALERT-2023)
+
+This is an automated security message from Windows Defender.
+Microsoft Partner: SecureTech Solutions
